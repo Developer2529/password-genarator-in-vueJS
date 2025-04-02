@@ -5,6 +5,7 @@ body {
     font-family: "Roboto", sans-serif;
     font-weight: 300;
     font-style: normal;
+    color: black;
      
     
   }
@@ -13,5 +14,7 @@ body {
     display: flex;
     justify-items: center;
     justify-content: center;
-    margin-top: 8rem;
+    margin-top: 2rem;
+    background-color: #e9e1e1; 
   }
+
