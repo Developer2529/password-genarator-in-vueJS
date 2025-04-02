@@ -69,7 +69,7 @@ const copyPassword = () => {
 
 
 
-// Generar una contraseña al cargar el componente
+// Generar una contraseña al cargar el componentes
 generateNumber();
 </script>
 
