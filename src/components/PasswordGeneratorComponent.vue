@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { useToast } from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-sugar.css';
-const $toast = useToast(); // Llamada correcta dentro de <script setup>
+const $toast = useToast();
 
 
 const passwordGenerated = ref('');
-const passwordLength = ref(12);  // Longitud predeterminada de la contraseña
-const checkedEmpresas = ref('coding');
+const passwordLength = ref(16);  // Longitud predeterminada de la contraseña
+const checkedEmpresas = ref('UAPA');
 const isChecked = ref(false);
 
 const passwordMessages = ref({
@@ -22,8 +22,36 @@ const passwordMessages = ref({
 
 const isPasswordCopied = ref(false);  // Para saber si ya se copió la contraseña
 
+const soporteHD = ref({
+  fname: "Mike",
+  passwordAmount: 0,
+})
+
+// Recuperar datos desde localStorage cuando la app carga
+onMounted(() => {
+  const storedData = localStorage.getItem("dataSent");
+  if (storedData) {
+    const parsedData = JSON.parse(storedData);
+    soporteHD.value.fname = parsedData.fname;
+    soporteHD.value.passwordAmount = parsedData.passwordAmount;
+  }
+
+  // Generar una nueva contraseña solo si passwordGenerated está vacío
+  if (!passwordGenerated.value) {
+    generateNumber();
+  }
+});
+
+
 // Función para generar el número aleatorio
 const generateNumber = () => {
+  soporteHD.value.passwordAmount++; //me guarda la cantidad de password generado
+
+  localStorage.setItem("dataSent", JSON.stringify(soporteHD.value));
+  console.log("Objeto original:", soporteHD.value);
+
+
+
   const specialChars = '!@#$%&*+?/';
   const specialCharSaved = specialChars.charAt(Math.floor(Math.random() * specialChars.length));
   const randomNum = Math.random().toString().slice(2, passwordLength.value - checkedEmpresas.value.length - (isChecked.value ? 1 : 0));  // Ajustamos el tamaño según la longitud deseada
@@ -69,8 +97,6 @@ const copyPassword = () => {
 
 
 
-// Generar una contraseña al cargar el componentes
-generateNumber();
 </script>
 
 
@@ -83,7 +109,7 @@ generateNumber();
         <img class="h-16 w-16 md:h-20 md:w-20" src="/src/assets/img/password.gif" alt="" />
       </div>
       <h2 class="text-lg font-bold mt-2 text-center">PASSWORD GENERATOR</h2>
-
+      <p>Has generado <span class="font-extrabold text-orange-600">{{ soporteHD.passwordAmount }}</span> passwords</p>
       <div class="flex flex-col md:flex-row items-center justify-center w-full gap-2 pt-4">
         <div class="flex flex-col pb-0 w-full">
           <div class="relative w-full">
@@ -111,16 +137,17 @@ generateNumber();
           <input type="range" id="password_length" min="8" max="18" v-model="passwordLength" class="w-full mt-2" />
 
           <div class="mt-4 w-full flex flex-col gap-2">
-            <label v-for="option in ['coding', 'vueJS', 'Javascript', 'Typescript', 'Tailwind', 'CSS', 'HTML']"
+            <label v-for="option in ['UAPA', 'coding', 'vueJS', 'Javascript', 'Typescript', 'Tailwind', 'CSS', 'HTML']"
               :key="option" class="flex justify-between text-sm">
               <span class="capitalize">{{ option }}</span>
               <input type="radio" :value="option" v-model="checkedEmpresas" class="mr-2" />
             </label>
           </div>
 
-          <div class="flex justify-between w-full mt-4 ">
-            <label class="text-sm">Special Characters</label>
-            <input type="checkbox" v-model="isChecked" class="mr-2" />
+          <div class="flex justify-between w-full mt-1 pt-4">
+            <label class="text-sm flex justify-between w-full mt-4 cursor-pointer">Special Characters
+              <input type="checkbox" v-model="isChecked" class="mr-2" />
+            </label>
           </div>
     </div>
   </div>
