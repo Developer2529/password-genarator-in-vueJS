@@ -52,12 +52,13 @@ const generateNumber = () => {
 
 
 
-  const specialChars = '!@#$%&*+?/';
+  const specialChars = '!@#$%&*+?/({)}\)';
   const specialCharSaved = specialChars.charAt(Math.floor(Math.random() * specialChars.length));
+  const specialCharSaved2 = specialChars.charAt(Math.floor(Math.random() * specialChars.length));
   const randomNum = Math.random().toString().slice(2, passwordLength.value - checkedEmpresas.value.length - (isChecked.value ? 1 : 0));  // Ajustamos el tamaño según la longitud deseada
 
   // Generamos la contraseña tomando en cuenta la longitud deseada
-  passwordGenerated.value = checkedEmpresas.value + randomNum + (isChecked.value ? specialCharSaved : '');
+  passwordGenerated.value = checkedEmpresas.value + randomNum + (isChecked.value ? specialCharSaved : '') + (isChecked.value ? specialCharSaved2 : '');
 
   // Ajustamos la longitud de la contraseña
   if (passwordGenerated.value.length < passwordLength.value) {
@@ -108,35 +109,35 @@ const copyPassword = () => {
       <div>
         <img class="h-16 w-16 md:h-20 md:w-20" src="/src/assets/img/password.gif" alt="" />
       </div>
-      <h2 class="text-lg font-bold mt-2 text-center">PASSWORD GENERATOR</h2>
+      <h2 class="text-lg font-bold mt-2 text-center pb-2">PASSWORD GENERATOR</h2>
       <p>Has generado <span class="font-extrabold text-orange-600">{{ soporteHD.passwordAmount }}</span> passwords</p>
-      <div class="flex flex-col md:flex-row items-center justify-center w-full gap-2 pt-4">
-        <div class="flex flex-col pb-0 w-full">
-          <div class="relative w-full">
+      <div class="flex flex-col md:flex-row items-center justify-center w-full   px-4 ">
+        <div class="flex flex-col  w-full py-8">
+          <div class="relative w-68  ">
             <input type="text" id="password_output"
-              class="border border-black text-base md:text-xl rounded-lg w-full pl-4 pr-8 py-2" readonly
-              :value="passwordGenerated ? passwordGenerated : 'Generate a new password'" />
+              class="border border-black text-base md:text-[1.1rem] rounded-lg w-full pl-6 pr-8 py-4" readonly
+              :value="passwordGenerated ? passwordGenerated : 'Generate a password'" />
             <button class="absolute right-2 top-1/2 transform -translate-y-1/2" v-on:click="generateNumber()">
-              <img src="/src/assets/img/reset_icon.svg" alt="Reset Icon" class="w-5 h-5" />
+              <img src="/src/assets/img/reset_icon.svg" alt="Reset Icon" class="w-9 h-9 reset-btn" />
             </button>
           </div>
         </div>
 
-        <div v-on:click="copyPassword" class="flex items-center bg-[#ccc] rounded-lg p-3 cursor-pointer">
-          <button class="flex items-center justify-center">
+        <div v-on:click="copyPassword" class="copy-div flex items-center bg-[#ccc] rounded-lg p-4 cursor-pointer">
+          <button class="flex items-center justify-center pr-1">
             <img src="/src/assets/img/content_copy.svg" alt="Copy Icon" />
             <p class="font-semibold text-sm md:text-base">Copy</p>
           </button>
         </div>
       </div>
 
-      <p class="text-sm mt-2" :class="passwordLength <= 11 ? 'text-red-700' : 'text-green-600'">
+      <p class="text-sm pb-2" :class="passwordLength <= 11 ? 'text-red-700' : 'text-green-600'">
         {{ passwordLength <= 11 ? 'Weak' : 'Strong' }} </p>
-          <p class="text-sm mt-2">Password Length: {{ passwordLength }}</p>
+          <p class="text-sm  pb-3">Password Length: {{ passwordLength }}</p>
 
-          <input type="range" id="password_length" min="8" max="18" v-model="passwordLength" class="w-full mt-2" />
+          <input type="range" id="password_length" min="8" max="18" v-model="passwordLength" class="w-full mt-2 px-4" />
 
-          <div class="mt-4 w-full flex flex-col gap-2">
+          <div class="mt-4 w-full flex flex-col gap-2 pt-6 px-4">
             <label v-for="option in ['UAPA', 'coding', 'vueJS', 'Javascript', 'Typescript', 'Tailwind', 'CSS', 'HTML']"
               :key="option" class="flex justify-between text-sm">
               <span class="capitalize">{{ option }}</span>
@@ -144,7 +145,7 @@ const copyPassword = () => {
             </label>
           </div>
 
-          <div class="flex justify-between w-full mt-1 pt-4">
+          <div class="flex justify-between w-full mt-1 pt-4 pb-3 px-4">
             <label class="text-sm flex justify-between w-full mt-4 cursor-pointer">Special Characters
               <input type="checkbox" v-model="isChecked" class="mr-2" />
             </label>
@@ -181,7 +182,7 @@ input[type='range'] {
 
 /* Track styling (for webkit browsers) */
 input[type='range']::-webkit-slider-runnable-track {
-  height: 20px;
+  height: 15px;
   background: #ccc;
   border-radius: 16px;
 }
